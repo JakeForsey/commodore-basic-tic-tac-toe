@@ -1,0 +1,104 @@
+1 REM Tic Tac Toe implemented in Commodore BASIC
+2 REM Setup intial variables
+3 SIZE = 2
+4 PLAYER$ = "x"
+5 DIM BOARD$(SIZE, SIZE)
+6 GOSUB 2000
+
+10 REM Main game loop
+20 INPUT "Enter i:";I
+30 IF I = -1 THEN EXIT
+40 INPUT "Enter j:";J
+50 IF J = -1 THEN EXIT
+60 GOSUB 3000: REM Update board
+70 GOSUB 1000: REM Print board
+75 GOSUB 5000: REM Check for wins
+80 GOSUB 4000: REM Swtich player
+100 GOTO 10
+
+1000 REM Print board
+1003 PRINT "    j j j "
+1004 PRINT "    0 1 2 "
+1005 PRINT "   -------"
+1010 FOR I = 0 TO SIZE
+1015   PRINT "i";I;"|";
+1020   FOR J = 0 TO SIZE
+1030     PRINT BOARD$(I, J);"|";
+1100   NEXT
+1101   PRINT ""
+1105   PRINT "   -------"
+1110 NEXT
+1111 RETURN
+
+2000 REM Initialise an empty board
+2030 FOR I = 0 TO SIZE
+2040   FOR J = 0 TO SIZE
+2050     BOARD$(I, J) = " "
+2060   NEXT
+2070 NEXT
+2080 RETURN
+
+3000 REM Update board with new player marker
+3010 IF BOARD$(I, J) = "x" OR BOARD$(I, J) = "o" THEN 
+3020   PRINT "Already a piece there!"
+3030   GOTO 10
+3040 ENDIF
+3050 BOARD$(I, J) = PLAYER$
+3060 RETURN 
+
+4000 REM Switch player
+4010 IF PLAYER$ = "x" THEN PLAYER$ = "o": RETURN
+4030 IF PLAYER$ = "o" THEN PLAYER$ = "x": RETURN
+
+5000 REM Check for wins
+5010 GOSUB 6000
+5020 GOSUB 7000
+5030 GOSUB 8000
+5040 RETURN
+
+6000 REM Check for horizontal wins
+6010 FOR I = 0 TO SIZE
+6020   INAROW = 0
+6030   FOR J = 0 TO SIZE
+6050     IF BOARD$(I, J) = PLAYER$ THEN
+6060       INAROW = INAROW + 1
+6070     ENDIF
+6080     IF BOARD$(I, J) <> PLAYER$ THEN
+6090       INAROW = 0
+6100     ENDIF
+6110     IF INAROW = SIZE + 1 THEN
+6120       PRINT PLAYER$;" wins!"
+6130       EXIT
+6140     ENDIF
+6150   NEXT
+6160 NEXT
+6170 RETURN
+
+7000 REM Check for vertical wins
+7010 FOR J = 0 TO SIZE
+7020   INAROW = 0
+7030   FOR I = 0 TO SIZE
+7050     IF BOARD$(I, J) = PLAYER$ THEN
+7060       INAROW = INAROW + 1
+7070     ENDIF
+7080     IF BOARD$(I, J) <> PLAYER$ THEN
+7090       INAROW = 0
+7100     ENDIF
+7110     IF INAROW = SIZE + 1 THEN
+7120       PRINT PLAYER$;" wins!"
+7130       EXIT
+7140     ENDIF
+7150   NEXT
+7160 NEXT
+7170 RETURN
+
+8000 REM Check for diagonal wins
+8010 IF BOARD$(0, 0) = PLAYER$ AND BOARD$(1, 1) = PLAYER$ AND BOARD$(2, 2) = PLAYER$ THEN
+8020   PRINT PLAYER$;" wins!"
+8030   EXIT
+8040 ENDIF
+8050 IF BOARD$(0, 2) = PLAYER$ AND BOARD$(1, 1) = PLAYER$ AND BOARD$(2, 0) = PLAYER$ THEN
+8060   PRINT PLAYER$;" wins!"
+8070   EXIT
+8080 ENDIF
+8090 RETURN
